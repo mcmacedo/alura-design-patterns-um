@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from descontos import DescontoPorCincoItens, DescontoPorMaisDeQuinhentosReais
+from descontos import DescontoPorCincoItens, DescontoPorMaisDeQuinhentosReais, SemDesconto
 
 class CalculadorDeDescontos(object):
     """
@@ -10,10 +10,10 @@ class CalculadorDeDescontos(object):
         Efetua o cálculo de descontos.
         :param orcamento: objeto da classe Orcamento contendo valor para ser calculado.
         """
-        desconto = DescontoPorCincoItens().calcula(orcamento)
-        if desconto == 0:
-            desconto = DescontoPorMaisDeQuinhentosReais().calcula(orcamento)
-
+        desconto = DescontoPorCincoItens(
+            DescontoPorMaisDeQuinhentosReais(SemDesconto())
+            ).calcula(orcamento)
+        
         return desconto
 
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     orcamento = Orcamento()
     orcamento.adiciona_item(Item('ITEM - 1', 100.0))
     orcamento.adiciona_item(Item('ITEM - 2', 50.0))
-    orcamento.adiciona_item(Item('ITEM - 3', 400.0))
+    orcamento.adiciona_item(Item('ITEM - 3', 100.0))
 
     calculador = CalculadorDeDescontos()
 
