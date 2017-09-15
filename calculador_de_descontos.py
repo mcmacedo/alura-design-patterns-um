@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from descontos import DescontoPorCincoItens, DescontoPorMaisDeQuinhentosReais
 
-class CalculadoraDeDescontos(object):
+class CalculadorDeDescontos(object):
     """
     Define o método para cálculo de Descontos dado um orçamento.
     """
@@ -9,8 +10,22 @@ class CalculadoraDeDescontos(object):
         Efetua o cálculo de descontos.
         :param orcamento: objeto da classe Orcamento contendo valor para ser calculado.
         """
-        if orcamento.total_itens > 5:
-            return orcamento.valor * 0.1
+        desconto = DescontoPorCincoItens().calcula(orcamento)
+        if desconto == 0:
+            desconto = DescontoPorMaisDeQuinhentosReais().calcula(orcamento)
 
-        elif orcamento.valor > 500:
-            return orcamento.valor * 0.07
+        return desconto
+
+
+if __name__ == '__main__':
+    from orcamento import Item, Orcamento
+
+    orcamento = Orcamento()
+    orcamento.adiciona_item(Item('ITEM - 1', 100.0))
+    orcamento.adiciona_item(Item('ITEM - 2', 50.0))
+    orcamento.adiciona_item(Item('ITEM - 3', 400.0))
+
+    calculador = CalculadorDeDescontos()
+
+    desconto = calculador.calcula(orcamento)
+    print '{}%'.format(desconto)
